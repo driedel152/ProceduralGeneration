@@ -232,8 +232,8 @@ MonoBehaviour:
   autoUpdate: 1
   noiseSettings: {fileID: 11400000, guid: e5ff03ed6518fe143a09a6c5ecf94c40, type: 2}
   mapMaterial: {fileID: 2100000, guid: e4a57a8bcecbfa44e8511b7680da1d98, type: 2}
-  mapSize: 16
-  mapLevelZ: 9
+  mapSize: 32
+  mapLevelZ: 14
 --- !u!4 &1211003529
 Transform:
   m_ObjectHideFlags: 0
