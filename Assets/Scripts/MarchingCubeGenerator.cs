@@ -265,50 +265,78 @@ public class MarchingCubeGenerator : MonoBehaviour
         {0, 3, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
         {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
     };
-
-    static readonly Vector3[] vertices =
-    {
-        new Vector3(1, -1, 1),
-        new Vector3(1, -1, -1),
-        new Vector3(-1, -1, -1),
-        new Vector3(-1, -1, 1),
-        new Vector3(1, 1, 1),
-        new Vector3(1, 1, -1),
-        new Vector3(-1, 1, -1),
-        new Vector3(-1, 1, 1),
-    };
-    static Vector3[] edges =
-    {
-        new Vector3(1, -1, 0),
-        new Vector3(0, -1, -1),
-        new Vector3(-1, -1, 0),
-        new Vector3(0, -1, 1),
-        new Vector3(1, 1, 0),
-        new Vector3(0, 1, -1),
-        new Vector3(-1, 1, 0),
-        new Vector3(0, 1, 1),
-        new Vector3(1, 0, 1),
-        new Vector3(1, 0, -1),
-        new Vector3(-1, 0, -1),
-        new Vector3(-1, 0, 1),
-    };
-
+       
     public bool[] activeVertices = new bool[8];
+
+    public MeshFilter meshFilter;
+    public MeshRenderer meshRenderer;
 
     public void DrawTriangles()
     {
-        DrawCube();
+        DrawCube(GetCubeVertsAt(Vector3.zero, 1));
 
         int iteration = (int)ConvertBoolArrayToByte(activeVertices);
-        Debug.Log(iteration);
+        Vector3[] edges = GetCubeEdgesAt(Vector3.zero, 1);
 
-        for(int triangleVertexIndex = 0; triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex>triTable.GetLength(1); triangleVertexIndex+=3)
+        int[] triangles = new int[15];
+
+        for (int triangleVertexIndex = 0; triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > triTable.GetLength(1); triangleVertexIndex += 3)
         {
             Vector3 a = edges[triTable[iteration, triangleVertexIndex]];
             Vector3 b = edges[triTable[iteration, triangleVertexIndex + 1]];
             Vector3 c = edges[triTable[iteration, triangleVertexIndex + 2]];
             DrawTriangle(a, b, c);
+
+            triangles[triangleVertexIndex] = triTable[iteration, triangleVertexIndex];
+            triangles[triangleVertexIndex + 2] = triTable[iteration, triangleVertexIndex + 1]; 
+            triangles[triangleVertexIndex + 1] = triTable[iteration, triangleVertexIndex + 2]; // for some reason, it has to be clockwise
         }
+
+        Mesh mesh = new Mesh();
+        meshFilter.mesh = mesh;
+        mesh.vertices = edges;
+        mesh.triangles = triangles;
+        
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        
+        meshFilter.sharedMesh = mesh;
+        
+        meshFilter.gameObject.SetActive(true);
+    }
+
+    public static Vector3[] GetCubeVertsAt(Vector3 coord, int size)
+    {
+        return new Vector3[]
+        {
+            new Vector3(size, 0, size) + coord,
+            new Vector3(size, 0, 0) + coord,
+            new Vector3(0, 0, 0) + coord,
+            new Vector3(0, 0, size) + coord,
+            new Vector3(size, size, size) + coord,
+            new Vector3(size, size, 0) + coord,
+            new Vector3(0, size, 0) + coord,
+            new Vector3(0, size, size) + coord,
+        };
+    }
+
+    public static Vector3[] GetCubeEdgesAt(Vector3 coord, int size)
+    {
+        return new Vector3[]
+        {
+            new Vector3(size, 0, size / 2f) + coord,
+            new Vector3(size / 2f, 0, 0) + coord,
+            new Vector3(0, 0, size / 2f) + coord,
+            new Vector3(size / 2f, 0, size) + coord,
+            new Vector3(size, size, size / 2f) + coord,
+            new Vector3(size / 2f, size, 0) + coord,
+            new Vector3(0, size, size / 2f) + coord,
+            new Vector3(size / 2f, size, size) + coord,
+            new Vector3(size, size / 2f, size) + coord,
+            new Vector3(size, size / 2f, 0) + coord,
+            new Vector3(0, size / 2f, 0) + coord,
+            new Vector3(0, size / 2f, size) + coord,
+        };
     }
 
     static byte ConvertBoolArrayToByte(bool[] source)
@@ -333,7 +361,7 @@ public class MarchingCubeGenerator : MonoBehaviour
         Debug.DrawLine(c, a, Color.blue);
     }
 
-    void DrawCube()
+    void DrawCube(Vector3[] vertices)
     {
         Debug.DrawLine(vertices[0], vertices[1], Color.red);
         Debug.DrawLine(vertices[1], vertices[2], Color.red);
