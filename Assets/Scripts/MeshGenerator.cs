@@ -8,7 +8,8 @@ public static class MeshGenerator
 	public static MeshData GenerateTerrainMesh(float[,,] noiseMap, float surfaceLevel)
 	{
 		// assuming it's a cube
-		MeshData meshData = new MeshData(noiseMap.GetLength(0));
+		int numVertsPerLine = noiseMap.GetLength(0);
+		MeshData meshData = new MeshData(numVertsPerLine);
 		int vertexIndex = 0;
 
         for (int x = 0; x < noiseMap.GetLength(0)-1; x++)
@@ -32,7 +33,8 @@ public static class MeshGenerator
 					Vector3[] edges = MarchingCubeGenerator.GetCubeEdgesAt(new Vector3(x, y, z), 1);
                     for (int i = 0; i < edges.Length; i++)
 					{
-						meshData.AddVertex(edges[i], vertexIndex + i);
+						Vector2 percent = new Vector2(x, y) / (numVertsPerLine);
+						meshData.AddVertex(edges[i], percent, vertexIndex + i);
 					}
 
 					for (int triangleVertexIndex = 0; MarchingCubeGenerator.triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > MarchingCubeGenerator.triTable.GetLength(1); triangleVertexIndex += 3)
@@ -65,14 +67,16 @@ public class MeshData
 	{
 		int numEdges = (int)Mathf.Pow(numVertices-1, 3) * 12;
 		vertices = new Vector3[numEdges];
+		uvs = new Vector2[numEdges];
 		int maxNumTriangleVerts = (int)Mathf.Pow(numVertices - 1, 3) * 5 * 3;
 		triangles = new int[maxNumTriangleVerts];
 	}
 
-	public void AddVertex(Vector3 vertexPosition, int vertexIndex)
+	public void AddVertex(Vector3 vertexPosition, Vector2 uv, int vertexIndex)
 	{
 		//Debug.Log($"Adding vertex ({vertexPosition}) at index: {vertexIndex}");
 		vertices[vertexIndex] = vertexPosition;
+		uvs[vertexIndex] = uv;
 	}
 
 	public void AddTriangle(int a, int b, int c)
