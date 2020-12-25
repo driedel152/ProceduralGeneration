@@ -6,7 +6,7 @@ public class MarchingCubeGenerator : MonoBehaviour
 {
     public bool autoUpdate;
 
-    static readonly int[,] triTable =
+    public static readonly int[,] triTable =
     {
         {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
         {0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
@@ -278,7 +278,7 @@ public class MarchingCubeGenerator : MonoBehaviour
         int iteration = (int)ConvertBoolArrayToByte(activeVertices);
         Vector3[] edges = GetCubeEdgesAt(Vector3.zero, 1);
 
-        int[] triangles = new int[15];
+        int[] triangles = new int[18];
 
         for (int triangleVertexIndex = 0; triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > triTable.GetLength(1); triangleVertexIndex += 3)
         {
@@ -339,7 +339,7 @@ public class MarchingCubeGenerator : MonoBehaviour
         };
     }
 
-    static byte ConvertBoolArrayToByte(bool[] source)
+    public static byte ConvertBoolArrayToByte(bool[] source)
     {
         byte result = 0;
 

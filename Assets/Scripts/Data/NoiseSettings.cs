@@ -9,6 +9,7 @@ public class NoiseSettings : UpdatableData
 
 	public float scale = 50;
 
+	[Range(1,10)]
 	public int octaves = 6;
 	[Range(0, 1)]
 	public float persistance = .6f;
