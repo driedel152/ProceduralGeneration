@@ -42,7 +42,7 @@ public static class MeshGenerator
 						meshData.AddTriangle(
 							MarchingCubeGenerator.triTable[iteration, triangleVertexIndex] + vertexIndex, 
 							MarchingCubeGenerator.triTable[iteration, triangleVertexIndex + 2] + vertexIndex,
-							MarchingCubeGenerator.triTable[iteration, triangleVertexIndex + 1] + vertexIndex);
+							MarchingCubeGenerator.triTable[iteration, triangleVertexIndex + 1] + vertexIndex); // clockwise for some reason
 					}
 					vertexIndex += 12;
 				}
