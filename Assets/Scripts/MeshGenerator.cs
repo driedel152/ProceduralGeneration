@@ -5,12 +5,13 @@ public static class MeshGenerator
 {
 
 
-	public static MeshData GenerateTerrainMesh(float[,,] noiseMap, float surfaceLevel)
+	public static MeshData GenerateTerrainMesh(float[,,] noiseMap, float surfaceLevel, int size, bool interpolate)
 	{
 		// assuming it's a cube
 		int numVertsPerLine = noiseMap.GetLength(0);
 		MeshData meshData = new MeshData(numVertsPerLine);
 		int vertexIndex = 0;
+		int mapSize = noiseMap.GetLength(0) * size;
 
         for (int x = 0; x < noiseMap.GetLength(0)-1; x++)
         {
@@ -29,12 +30,15 @@ public static class MeshGenerator
 						noiseMap[x,y+1,z] > surfaceLevel,
 						noiseMap[x,y+1,z+1] > surfaceLevel,
 					};
+
 					int iteration = (int)MarchingCubeGenerator.ConvertBoolArrayToByte(activeVertices);
-					Vector3[] edges = MarchingCubeGenerator.GetCubeEdgesAt(new Vector3(x, y, z), 1);
-                    for (int i = 0; i < edges.Length; i++)
+					Vector3[] edges = !interpolate ? MarchingCubeGenerator.GetCubeEdgesAt(x, y, z, size) : MarchingCubeGenerator.GetInterpolatedCubeEdgesAt(x, y, z, size, noiseMap, surfaceLevel);
+
+					for (int i = 0; i < edges.Length; i++)
 					{
+						Vector3 centeredEdge = edges[i] - new Vector3(mapSize, mapSize, mapSize) / 2f;
 						Vector2 percent = new Vector2(x, y) / (numVertsPerLine);
-						meshData.AddVertex(edges[i], percent, vertexIndex + i);
+						meshData.AddVertex(centeredEdge, percent, vertexIndex + i);
 					}
 
 					for (int triangleVertexIndex = 0; MarchingCubeGenerator.triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > MarchingCubeGenerator.triTable.GetLength(1); triangleVertexIndex += 3)
@@ -91,6 +95,7 @@ public class MeshData
 	public Mesh CreateMesh()
 	{
 		Mesh mesh = new Mesh();
+		mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 		mesh.vertices = vertices;
 		mesh.triangles = triangles;
 		mesh.uv = uvs;

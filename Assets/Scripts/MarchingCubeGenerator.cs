@@ -276,7 +276,7 @@ public class MarchingCubeGenerator : MonoBehaviour
         DrawCube(GetCubeVertsAt(Vector3.zero, 1));
 
         int iteration = (int)ConvertBoolArrayToByte(activeVertices);
-        Vector3[] edges = GetCubeEdgesAt(Vector3.zero, 1);
+        Vector3[] edges = GetCubeEdgesAt(0, 0, 0, 1);
 
         int[] triangles = new int[18];
 
@@ -320,22 +320,43 @@ public class MarchingCubeGenerator : MonoBehaviour
         };
     }
 
-    public static Vector3[] GetCubeEdgesAt(Vector3 coord, int size)
+    public static Vector3[] GetCubeEdgesAt(int x, int y, int z, int size)
     {
+        Vector3 coord = new Vector3(x, y, z);
         return new Vector3[]
         {
-            new Vector3(size, 0, size / 2f) + coord,
-            new Vector3(size / 2f, 0, 0) + coord,
-            new Vector3(0, 0, size / 2f) + coord,
-            new Vector3(size / 2f, 0, size) + coord,
-            new Vector3(size, size, size / 2f) + coord,
-            new Vector3(size / 2f, size, 0) + coord,
-            new Vector3(0, size, size / 2f) + coord,
-            new Vector3(size / 2f, size, size) + coord,
-            new Vector3(size, size / 2f, size) + coord,
-            new Vector3(size, size / 2f, 0) + coord,
-            new Vector3(0, size / 2f, 0) + coord,
-            new Vector3(0, size / 2f, size) + coord,
+            size * (new Vector3(1, 0, 0.5f) + coord),
+            size * (new Vector3(0.5f, 0, 0) + coord),
+            size * (new Vector3(0, 0, 0.5f) + coord),
+            size * (new Vector3(0.5f, 0, 1) + coord),
+            size * (new Vector3(1, 1, 0.5f) + coord),
+            size * (new Vector3(0.5f, 1, 0) + coord),
+            size * (new Vector3(0, 1, 0.5f) + coord),
+            size * (new Vector3(0.5f, 1, 1) + coord),
+            size * (new Vector3(1, 0.5f, 1) + coord),
+            size * (new Vector3(1, 0.5f, 0) + coord),
+            size * (new Vector3(0, 0.5f, 0) + coord),
+            size * (new Vector3(0, 0.5f, 1) + coord),
+        };
+    }
+
+    public static Vector3[] GetInterpolatedCubeEdgesAt(int x, int y, int z, int size, float[,,] noiseMap, float surfaceLevel)
+    {
+        Vector3 coord = new Vector3(x, y, z);
+        return new Vector3[]
+        {
+            size * (new Vector3(1, 0, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y, z + 1], surfaceLevel)) + coord),
+            size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x + 1, y, z], surfaceLevel), 0, 0) + coord),
+            size * (new Vector3(0, 0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y, z + 1], surfaceLevel)) + coord),
+            size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x + 1, y, z + 1], surfaceLevel), 0, 1) + coord),
+            size * (new Vector3(1, 1, Mathf.InverseLerp(noiseMap[x + 1, y + 1, z], noiseMap[x + 1, y + 1, z + 1], surfaceLevel)) + coord),
+            size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 1, 0) + coord),
+            size * (new Vector3(0, 1, Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x, y + 1, z + 1], surfaceLevel)) + coord),
+            size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1, 1) + coord),
+            size * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1) + coord),
+            size * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 0) + coord),
+            size * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y + 1, z], surfaceLevel), 0) + coord),
+            size * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x, y + 1, z + 1], surfaceLevel), 1) + coord),
         };
     }
 
