@@ -32,23 +32,27 @@ public static class MeshGenerator
 					};
 
 					int iteration = (int)MarchingCubeGenerator.ConvertBoolArrayToByte(activeVertices);
-					Vector3[] edges = !interpolate ? MarchingCubeGenerator.GetCubeEdgesAt(x, y, z, size) : MarchingCubeGenerator.GetInterpolatedCubeEdgesAt(x, y, z, size, noiseMap, surfaceLevel);
-
-					for (int i = 0; i < edges.Length; i++)
-					{
-						Vector3 centeredEdge = edges[i] - new Vector3(mapSize, mapSize, mapSize) / 2f;
-						Vector2 percent = new Vector2(x, y) / (numVertsPerLine);
-						meshData.AddVertex(centeredEdge, percent, vertexIndex + i);
-					}
+					//Vector3[] edges = !interpolate ? MarchingCubeGenerator.GetCubeEdgesAt(x, y, z, size) : MarchingCubeGenerator.GetInterpolatedCubeEdgesAt(x, y, z, size, noiseMap, surfaceLevel);
+					//
+					//for (int i = 0; i < edges.Length; i++)
+					//{
+					//	Vector3 centeredEdge = edges[i] - new Vector3(mapSize, mapSize, mapSize) / 2f;
+					//	Vector2 percent = new Vector2(x, y) / (numVertsPerLine);
+					//	meshData.AddVertex(centeredEdge, percent, vertexIndex + i);
+					//}
 
 					for (int triangleVertexIndex = 0; MarchingCubeGenerator.triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > MarchingCubeGenerator.triTable.GetLength(1); triangleVertexIndex += 3)
 					{
-						meshData.AddTriangle(
-							MarchingCubeGenerator.triTable[iteration, triangleVertexIndex] + vertexIndex, 
-							MarchingCubeGenerator.triTable[iteration, triangleVertexIndex + 2] + vertexIndex,
-							MarchingCubeGenerator.triTable[iteration, triangleVertexIndex + 1] + vertexIndex); // clockwise for some reason
+						Vector3 a = MarchingCubeGenerator.GetCubeEdgeAt(x, y, z, size, noiseMap, surfaceLevel, MarchingCubeGenerator.triTable[iteration, triangleVertexIndex]);
+						Vector3 b = MarchingCubeGenerator.GetCubeEdgeAt(x, y, z, size, noiseMap, surfaceLevel, MarchingCubeGenerator.triTable[iteration, triangleVertexIndex + 1]);
+						Vector3 c = MarchingCubeGenerator.GetCubeEdgeAt(x, y, z, size, noiseMap, surfaceLevel, MarchingCubeGenerator.triTable[iteration, triangleVertexIndex + 2]);
+						meshData.AddVertex(a - new Vector3(mapSize, mapSize, mapSize) / 2f, new Vector2(x, y) / numVertsPerLine, vertexIndex);
+						meshData.AddVertex(b - new Vector3(mapSize, mapSize, mapSize) / 2f, new Vector2(x, y) / numVertsPerLine, vertexIndex + 1);
+						meshData.AddVertex(c - new Vector3(mapSize, mapSize, mapSize) / 2f, new Vector2(x, y) / numVertsPerLine, vertexIndex + 2);
+						meshData.AddTriangle(vertexIndex, vertexIndex + 2, vertexIndex + 1); // clockwise for some reason
+						vertexIndex+=3;
 					}
-					vertexIndex += 12;
+					//vertexIndex += 12;
 				}
             }
         }

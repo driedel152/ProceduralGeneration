@@ -320,6 +320,40 @@ public class MarchingCubeGenerator : MonoBehaviour
         };
     }
 
+    public static Vector3 GetCubeEdgeAt(int x, int y, int z, int size, float[,,] noiseMap, float surfaceLevel, int edgeNum)
+    {
+        Vector3 coord = new Vector3(x, y, z);
+        switch (edgeNum)
+        {
+            case 0:
+                return size * (new Vector3(1, 0, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y, z + 1], surfaceLevel)) + coord);
+            case 1:
+                return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x + 1, y, z], surfaceLevel), 0, 0) + coord);
+            case 2:
+                return size * (new Vector3(0, 0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y, z + 1], surfaceLevel)) + coord);
+            case 3:
+                return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x + 1, y, z + 1], surfaceLevel), 0, 1) + coord);
+            case 4:
+                return size * (new Vector3(1, 1, Mathf.InverseLerp(noiseMap[x + 1, y + 1, z], noiseMap[x + 1, y + 1, z + 1], surfaceLevel)) + coord);
+            case 5:
+                return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 1, 0) + coord);
+            case 6:
+                return size * (new Vector3(0, 1, Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x, y + 1, z + 1], surfaceLevel)) + coord);
+            case 7:
+                return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1, 1) + coord);
+            case 8:
+                return size * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1) + coord);
+            case 9:
+                return size * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 0) + coord);
+            case 10:
+                return size * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y + 1, z], surfaceLevel), 0) + coord);
+            case 11:
+                return size * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x, y + 1, z + 1], surfaceLevel), 1) + coord);
+            default:
+                return Vector3.zero;
+        }
+    }
+
     public static Vector3[] GetCubeEdgesAt(int x, int y, int z, int size)
     {
         Vector3 coord = new Vector3(x, y, z);
