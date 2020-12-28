@@ -287,22 +287,22 @@ public class MarchingCubeGenerator : MonoBehaviour
             Vector3 c = edges[triTable[iteration, triangleVertexIndex + 2]];
             DrawTriangle(a, b, c);
 
-            triangles[triangleVertexIndex] = triTable[iteration, triangleVertexIndex];
-            triangles[triangleVertexIndex + 2] = triTable[iteration, triangleVertexIndex + 1]; 
-            triangles[triangleVertexIndex + 1] = triTable[iteration, triangleVertexIndex + 2]; // for some reason, it has to be clockwise
+            //triangles[triangleVertexIndex] = triTable[iteration, triangleVertexIndex];
+            //triangles[triangleVertexIndex + 2] = triTable[iteration, triangleVertexIndex + 1]; 
+            //triangles[triangleVertexIndex + 1] = triTable[iteration, triangleVertexIndex + 2]; // for some reason, it has to be clockwise
         }
 
-        Mesh mesh = new Mesh();
-        meshFilter.mesh = mesh;
-        mesh.vertices = edges;
-        mesh.triangles = triangles;
-        
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-        
-        meshFilter.sharedMesh = mesh;
-        
-        meshFilter.gameObject.SetActive(true);
+        //Mesh mesh = new Mesh();
+        //meshFilter.mesh = mesh;
+        //mesh.vertices = edges;
+        //mesh.triangles = triangles;
+        //
+        //mesh.RecalculateNormals();
+        //mesh.RecalculateBounds();
+        //
+        //meshFilter.sharedMesh = mesh;
+        //
+        //meshFilter.gameObject.SetActive(true);
     }
 
     public static Vector3[] GetCubeVertsAt(Vector3 coord, int size)
@@ -318,40 +318,6 @@ public class MarchingCubeGenerator : MonoBehaviour
             new Vector3(0, size, 0) + coord,
             new Vector3(0, size, size) + coord,
         };
-    }
-
-    public static Vector3 GetCubeEdgeAt(int x, int y, int z, int size, float[,,] noiseMap, float surfaceLevel, int edgeNum)
-    {
-        Vector3 coord = new Vector3(x, y, z);
-        switch (edgeNum)
-        {
-            case 0:
-                return size * (new Vector3(1, 0, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y, z + 1], surfaceLevel)) + coord);
-            case 1:
-                return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x + 1, y, z], surfaceLevel), 0, 0) + coord);
-            case 2:
-                return size * (new Vector3(0, 0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y, z + 1], surfaceLevel)) + coord);
-            case 3:
-                return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x + 1, y, z + 1], surfaceLevel), 0, 1) + coord);
-            case 4:
-                return size * (new Vector3(1, 1, Mathf.InverseLerp(noiseMap[x + 1, y + 1, z], noiseMap[x + 1, y + 1, z + 1], surfaceLevel)) + coord);
-            case 5:
-                return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 1, 0) + coord);
-            case 6:
-                return size * (new Vector3(0, 1, Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x, y + 1, z + 1], surfaceLevel)) + coord);
-            case 7:
-                return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1, 1) + coord);
-            case 8:
-                return size * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1) + coord);
-            case 9:
-                return size * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 0) + coord);
-            case 10:
-                return size * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y + 1, z], surfaceLevel), 0) + coord);
-            case 11:
-                return size * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x, y + 1, z + 1], surfaceLevel), 1) + coord);
-            default:
-                return Vector3.zero;
-        }
     }
 
     public static Vector3[] GetCubeEdgesAt(int x, int y, int z, int size)

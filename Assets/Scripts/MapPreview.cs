@@ -17,8 +17,7 @@ public class MapPreview : MonoBehaviour
 	public int mapLevelZ;
 	[Range(0,1)]
 	public float surfaceLevel;
-	public int meshSize = 1;
-	public bool interpolate;
+	public int meshScale = 1;
 
 	Texture2D mapTexture;
 
@@ -34,7 +33,7 @@ public class MapPreview : MonoBehaviour
 			mapTexture = TextureGenerator.TextureFromNoiseMap(noiseMap, mapLevelZ);
 			mapMaterial.mainTexture = mapTexture;
 		} else if (drawMode == DrawMode.Mesh) {
-			DrawMesh (MeshGenerator.GenerateTerrainMesh(noiseMap, surfaceLevel, meshSize, interpolate));
+			DrawMesh (MeshGenerator.GenerateTerrainMesh(noiseMap, surfaceLevel, meshScale));
 		} 
 	}
 
