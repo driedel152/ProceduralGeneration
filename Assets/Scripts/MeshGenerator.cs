@@ -263,8 +263,9 @@ public static class MeshGenerator
         {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
     };
 
-    public static MeshData GenerateTerrainMesh(float[,,] noiseMap, float surfaceLevel, int meshScale)
+    public static MeshData GenerateTerrainMesh(TerrainMap terrainMap, float surfaceLevel, int meshScale, Vector3 sampleCentre)
 	{
+        float[,,] noiseMap = terrainMap.values;
         int volume = (int)Mathf.Pow(noiseMap.GetLength(0), 3); // assuming it's a cube
         int maxMeshTriangles = volume * 5;
         int maxMeshVertices = maxMeshTriangles * 3;
@@ -291,16 +292,16 @@ public static class MeshGenerator
 						noiseMap[x,y+1,z+1] > surfaceLevel,
 					};
 
-					int iteration = (int)MarchingCubeGenerator.ConvertBoolArrayToByte(activeVertices);
+					int iteration = (int)ConvertBoolArrayToByte(activeVertices);
 
 					for (int triangleVertexIndex = 0; triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > triTable.GetLength(1); triangleVertexIndex += 3)
 					{
 						Vector3 a = GetCubeEdgeAt(x, y, z, meshScale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex]);
 						Vector3 b = GetCubeEdgeAt(x, y, z, meshScale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 1]);
 						Vector3 c = GetCubeEdgeAt(x, y, z, meshScale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 2]);
-						meshData.AddVertex(a - new Vector3(mapSize, mapSize, mapSize) / 2f, new Vector2(x, y), vertexIndex);
-						meshData.AddVertex(b - new Vector3(mapSize, mapSize, mapSize) / 2f, new Vector2(x, y), vertexIndex + 1);
-						meshData.AddVertex(c - new Vector3(mapSize, mapSize, mapSize) / 2f, new Vector2(x, y), vertexIndex + 2);
+						meshData.AddVertex(a, new Vector2(x, y), vertexIndex);
+						meshData.AddVertex(b, new Vector2(x, y), vertexIndex + 1);
+						meshData.AddVertex(c, new Vector2(x, y), vertexIndex + 2);
 						meshData.AddTriangle(vertexIndex, vertexIndex + 2, vertexIndex + 1); // clockwise for some reason
 						vertexIndex+=3;
 					}
@@ -345,6 +346,21 @@ public static class MeshGenerator
 				return Vector3.zero;
 		}
 	}
+
+    public static byte ConvertBoolArrayToByte(bool[] source)
+    {
+        byte result = 0;
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (source[i])
+            {
+                result |= (byte)(1 << (i));
+            }
+        }
+
+        return result;
+    }
 }
 
 public class MeshData

@@ -9,7 +9,7 @@ public class MapPreview : MonoBehaviour
 
 	public Material terrainMaterial;
 
-	public NoiseSettings noiseSettings;
+	public TerrainMapSettings terrainSettings;
 
 	public Material mapMaterial;
 
@@ -18,6 +18,7 @@ public class MapPreview : MonoBehaviour
 	[Range(0,1)]
 	public float surfaceLevel;
 	public int meshScale = 1;
+	public Vector3 sampleCentre;
 
 	Texture2D mapTexture;
 
@@ -27,13 +28,13 @@ public class MapPreview : MonoBehaviour
 
 
 	public void DrawMapInEditor() {
-		float[,,] noiseMap = Noise.GenerateNoiseMap(mapSize, noiseSettings, Vector3.zero);
+		TerrainMap terrainMap = TerrainMapGenerator.GenerateTerrainMap(mapSize, terrainSettings, sampleCentre);
 
 		if (drawMode == DrawMode.NoiseMap) {
-			mapTexture = TextureGenerator.TextureFromNoiseMap(noiseMap, mapLevelZ);
+			mapTexture = TextureGenerator.TextureFromNoiseMap(terrainMap.values, mapLevelZ);
 			mapMaterial.mainTexture = mapTexture;
 		} else if (drawMode == DrawMode.Mesh) {
-			DrawMesh (MeshGenerator.GenerateTerrainMesh(noiseMap, surfaceLevel, meshScale));
+			DrawMesh (MeshGenerator.GenerateTerrainMesh(terrainMap, surfaceLevel, meshScale, sampleCentre));
 		} 
 	}
 
@@ -53,9 +54,9 @@ public class MapPreview : MonoBehaviour
 
 	void OnValidate() 
 	{
-		if (noiseSettings != null) {
-			noiseSettings.OnValuesUpdated -= OnValuesUpdated;
-			noiseSettings.OnValuesUpdated += OnValuesUpdated;
+		if (terrainSettings != null) {
+			terrainSettings.OnValuesUpdated -= OnValuesUpdated;
+			terrainSettings.OnValuesUpdated += OnValuesUpdated;
 		}
 	}
 
