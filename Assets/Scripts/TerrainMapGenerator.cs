@@ -8,8 +8,6 @@ public static class TerrainMapGenerator
 	{
 		float[,,] values = Noise.GenerateNoiseMap(mapSize, settings.noiseSettings, sampleCentre);
 
-		AnimationCurve heightCurve_threadsafe = new AnimationCurve(settings.heightCurve.keys);
-
 		float minValue = float.MaxValue;
 		float maxValue = float.MinValue;
 
@@ -17,8 +15,6 @@ public static class TerrainMapGenerator
 		{
 			for (int j = 0; j < mapSize; j++)
 			{
-				values[i, 0, j] *= heightCurve_threadsafe.Evaluate(values[i, 0, j]) * settings.heightMultiplier;
-
 				if (values[i, 0, j] > maxValue)
 				{
 					maxValue = values[i, 0, j];
