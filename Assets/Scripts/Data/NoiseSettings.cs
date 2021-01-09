@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class NoiseSettings : UpdatableData
 {
-	public Noise.NormalizeMode normalizeMode;
-
 	public float scale = 50;
 
 	[Range(1,10)]

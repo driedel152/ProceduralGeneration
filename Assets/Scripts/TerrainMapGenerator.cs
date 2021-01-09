@@ -8,38 +8,18 @@ public static class TerrainMapGenerator
 	{
 		float[,,] values = Noise.GenerateNoiseMap(mapSize, settings.noiseSettings, sampleCentre);
 
-		float minValue = float.MaxValue;
-		float maxValue = float.MinValue;
-
-		for (int i = 0; i < mapSize; i++)
-		{
-			for (int j = 0; j < mapSize; j++)
-			{
-				if (values[i, 0, j] > maxValue)
-				{
-					maxValue = values[i, 0, j];
-				}
-				if (values[i, 0, j] < minValue)
-				{
-					minValue = values[i, 0, j];
-				}
-			}
-		}
-
-		return new TerrainMap(values, minValue, maxValue);
+		return new TerrainMap(values, settings);
 	}
 }
 
-public struct TerrainMap
+public class TerrainMap
 {
 	public readonly float[,,] values;
-	public readonly float minValue;
-	public readonly float maxValue;
+	TerrainMapSettings settings;
 
-	public TerrainMap(float[,,] values, float minValue, float maxValue)
+	public TerrainMap(float[,,] values, TerrainMapSettings settings)
 	{
 		this.values = values;
-		this.minValue = minValue;
-		this.maxValue = maxValue;
+		this.settings = settings;
 	}
 }

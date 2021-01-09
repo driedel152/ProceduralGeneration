@@ -3,7 +3,6 @@ using System.Collections;
 
 public static class Noise
 {
-	public enum NormalizeMode { Local, Global };
 
 	public static float[,,] GenerateNoiseMap(int mapSize, NoiseSettings settings, Vector3 sampleCentre)
 	{
@@ -66,26 +65,9 @@ public static class Noise
 					}
 					noiseMap[x, y, z] = noiseHeight;
 
-					if (settings.normalizeMode == NormalizeMode.Global)
-					{
-						float normalizedHeight = (noiseMap[x, y, z] + 1) / (maxPossibleHeight / 0.9f);
-						noiseMap[x, y, z] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
-					}
+					float normalizedHeight = (noiseMap[x, y, z] + 1) / (maxPossibleHeight / 0.9f);
+					noiseMap[x, y, z] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
 				}				
-			}
-		}
-
-		if (settings.normalizeMode == NormalizeMode.Local)
-		{
-			for (int y = 0; y < mapSize; y++)
-			{
-				for (int x = 0; x < mapSize; x++)
-				{
-                    for (int z = 0; z < mapSize; z++)
-					{
-						noiseMap[x, y, z] = Mathf.InverseLerp(minLocalNoiseHeight, maxLocalNoiseHeight, noiseMap[x, y, z]);
-					}
-				}
 			}
 		}
 
