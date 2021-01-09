@@ -5,7 +5,8 @@ using System.Collections;
 public class TerrainMapSettings : UpdatableData
 {
 
-	public NoiseSettings noiseSettings;
+	public NoiseSettings noiseSettings; 
+	public float surfaceLevel;
 
 #if UNITY_EDITOR
 

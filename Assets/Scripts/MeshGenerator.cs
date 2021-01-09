@@ -263,9 +263,10 @@ public static class MeshGenerator
         {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
     };
 
-    public static MeshData GenerateTerrainMesh(TerrainMap terrainMap, float surfaceLevel, int meshScale, Vector3 sampleCentre)
+    public static MeshData GenerateTerrainMesh(TerrainMap terrainMap, int meshScale, Vector3 sampleCentre)
 	{
         float[,,] noiseMap = terrainMap.values;
+        float surfaceLevel = terrainMap.settings.surfaceLevel;
         int volume = (int)Mathf.Pow(noiseMap.GetLength(0), 3); // assuming it's a cube
         int maxMeshTriangles = volume * 5;
         int maxMeshVertices = maxMeshTriangles * 3;

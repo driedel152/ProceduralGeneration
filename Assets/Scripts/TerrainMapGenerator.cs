@@ -15,7 +15,7 @@ public static class TerrainMapGenerator
 public class TerrainMap
 {
 	public readonly float[,,] values;
-	TerrainMapSettings settings;
+	public TerrainMapSettings settings;
 
 	public TerrainMap(float[,,] values, TerrainMapSettings settings)
 	{
