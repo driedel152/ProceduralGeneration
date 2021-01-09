@@ -280,19 +280,8 @@ public static class MeshGenerator
             {
                 for (int z = 0; z < noiseMap.GetLength(2)-1; z++)
                 {
-					bool[] activeVertices =
-					{
-						noiseMap[x+1,y,z+1] > surfaceLevel,
-						noiseMap[x+1,y,z] > surfaceLevel,
-						noiseMap[x,y,z] > surfaceLevel,
-						noiseMap[x,y,z+1] > surfaceLevel,
-						noiseMap[x+1,y+1,z+1] > surfaceLevel,
-						noiseMap[x+1,y+1,z] > surfaceLevel,
-						noiseMap[x,y+1,z] > surfaceLevel,
-						noiseMap[x,y+1,z+1] > surfaceLevel,
-					};
 
-					int iteration = (int)ConvertBoolArrayToByte(activeVertices);
+                    int iteration = getIteration(noiseMap, x, y, z, surfaceLevel);
 
 					for (int triangleVertexIndex = 0; triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > triTable.GetLength(1); triangleVertexIndex += 3)
 					{
@@ -312,6 +301,23 @@ public static class MeshGenerator
 		return meshData;
 
 	}
+
+    public static int getIteration(float[,,] noiseMap, int x, int y, int z, double surfaceLevel)
+    {
+        bool[] activeVertices =
+        {
+            noiseMap[x+1,y,z+1] > surfaceLevel,
+            noiseMap[x+1,y,z] > surfaceLevel,
+            noiseMap[x,y,z] > surfaceLevel,
+            noiseMap[x,y,z+1] > surfaceLevel,
+            noiseMap[x+1,y+1,z+1] > surfaceLevel,
+            noiseMap[x+1,y+1,z] > surfaceLevel,
+            noiseMap[x,y+1,z] > surfaceLevel,
+            noiseMap[x,y+1,z+1] > surfaceLevel,
+        };
+
+        return (int)ConvertBoolArrayToByte(activeVertices);
+    }
 
 	public static Vector3 GetCubeEdgeAt(int x, int y, int z, int size, float[,,] noiseMap, float surfaceLevel, int edgeNum)
 	{
