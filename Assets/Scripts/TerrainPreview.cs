@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MapPreview : MonoBehaviour 
+public class TerrainPreview : MonoBehaviour 
 {
 	public enum DrawMode {NoiseMap, Mesh};
 	public DrawMode drawMode;
@@ -15,8 +15,6 @@ public class MapPreview : MonoBehaviour
 
 	public int mapSize;
 	public int mapLevelZ;
-	[Range(0,1)]
-	public float surfaceLevel;
 	public int meshScale = 1;
 	public Vector3 sampleCentre;
 

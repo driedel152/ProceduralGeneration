@@ -6,6 +6,7 @@ public class TerrainMapSettings : UpdatableData
 {
 
 	public NoiseSettings noiseSettings; 
+	[Range(0,1)]
 	public float surfaceLevel;
 	public float scale;
 
