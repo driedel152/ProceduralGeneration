@@ -13,7 +13,7 @@ public class TerrainChunk
 
     public TerrainChunk(TerrainMapSettings settings, Vector3 sampleCentre)
     {
-        TerrainMap chunk = TerrainMapGenerator.GenerateTerrainMap(chunkSize, settings, sampleCentre);
+        TerrainMap chunk = TerrainMap.Generate(chunkSize, settings, sampleCentre);
         meshData = MeshGenerator.GenerateTerrainMesh(chunk, sampleCentre);
     }
 

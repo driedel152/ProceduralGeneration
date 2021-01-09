@@ -32,7 +32,7 @@ public class MapPreview : MonoBehaviour
 	}
 
     public void DrawMapInEditor() {
-		TerrainMap terrainMap = TerrainMapGenerator.GenerateTerrainMap(mapSize, terrainSettings, sampleCentre);
+		TerrainMap terrainMap = TerrainMap.Generate(mapSize, terrainSettings, sampleCentre);
 
 		if (drawMode == DrawMode.NoiseMap) {
 			mapTexture = TextureGenerator.TextureFromNoiseMap(terrainMap.values, mapLevelZ);
