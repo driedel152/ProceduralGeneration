@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEditor;
 
 [CustomEditor (typeof (TerrainPreview))]
-public class MapPreviewEditor : Editor 
+public class TerrainPreviewEditor : Editor 
 {
 
 	public override void OnInspectorGUI()
