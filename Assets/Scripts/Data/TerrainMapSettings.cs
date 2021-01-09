@@ -7,6 +7,7 @@ public class TerrainMapSettings : UpdatableData
 
 	public NoiseSettings noiseSettings; 
 	public float surfaceLevel;
+	public float scale;
 
 #if UNITY_EDITOR
 

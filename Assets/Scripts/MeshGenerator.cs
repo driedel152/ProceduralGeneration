@@ -263,17 +263,17 @@ public static class MeshGenerator
         {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
     };
 
-    public static MeshData GenerateTerrainMesh(TerrainMap terrainMap, int meshScale, Vector3 sampleCentre)
+    public static MeshData GenerateTerrainMesh(TerrainMap terrainMap, Vector3 sampleCentre)
 	{
         float[,,] noiseMap = terrainMap.values;
         float surfaceLevel = terrainMap.settings.surfaceLevel;
+        float scale = terrainMap.settings.scale;
         int volume = (int)Mathf.Pow(noiseMap.GetLength(0), 3); // assuming it's a cube
         int maxMeshTriangles = volume * 5;
         int maxMeshVertices = maxMeshTriangles * 3;
         MeshData meshData = new MeshData(maxMeshVertices, maxMeshTriangles);
 
 		int vertexIndex = 0;
-		int mapSize = noiseMap.GetLength(0) * meshScale;
 
         for (int x = 0; x < noiseMap.GetLength(0)-1; x++)
         {
@@ -286,9 +286,9 @@ public static class MeshGenerator
 
 					for (int triangleVertexIndex = 0; triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > triTable.GetLength(1); triangleVertexIndex += 3)
 					{
-						Vector3 a = GetCubeEdgeAt(x, y, z, meshScale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex]) + sampleCentre;
-						Vector3 b = GetCubeEdgeAt(x, y, z, meshScale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 1]) + sampleCentre;
-						Vector3 c = GetCubeEdgeAt(x, y, z, meshScale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 2]) + sampleCentre;
+						Vector3 a = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex]) + sampleCentre;
+						Vector3 b = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 1]) + sampleCentre;
+						Vector3 c = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 2]) + sampleCentre;
 						meshData.AddVertex(a, new Vector2(x, y), vertexIndex);
 						meshData.AddVertex(b, new Vector2(x, y), vertexIndex + 1);
 						meshData.AddVertex(c, new Vector2(x, y), vertexIndex + 2);
@@ -320,35 +320,35 @@ public static class MeshGenerator
         return (int)ConvertBoolArrayToByte(activeVertices);
     }
 
-	public static Vector3 GetCubeEdgeAt(int x, int y, int z, int size, float[,,] noiseMap, float surfaceLevel, int edgeNum)
+	public static Vector3 GetCubeEdgeAt(int x, int y, int z, float scale, float[,,] noiseMap, float surfaceLevel, int edgeNum)
 	{
 		Vector3 coord = new Vector3(x, y, z);
 		switch (edgeNum)
 		{
 			case 0:
-				return size * (new Vector3(1, 0, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y, z + 1], surfaceLevel)) + coord);
+				return scale * (new Vector3(1, 0, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y, z + 1], surfaceLevel)) + coord);
 			case 1:
-				return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x + 1, y, z], surfaceLevel), 0, 0) + coord);
+				return scale * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x + 1, y, z], surfaceLevel), 0, 0) + coord);
 			case 2:
-				return size * (new Vector3(0, 0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y, z + 1], surfaceLevel)) + coord);
+				return scale * (new Vector3(0, 0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y, z + 1], surfaceLevel)) + coord);
 			case 3:
-				return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x + 1, y, z + 1], surfaceLevel), 0, 1) + coord);
+				return scale * (new Vector3(Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x + 1, y, z + 1], surfaceLevel), 0, 1) + coord);
 			case 4:
-				return size * (new Vector3(1, 1, Mathf.InverseLerp(noiseMap[x + 1, y + 1, z], noiseMap[x + 1, y + 1, z + 1], surfaceLevel)) + coord);
+				return scale * (new Vector3(1, 1, Mathf.InverseLerp(noiseMap[x + 1, y + 1, z], noiseMap[x + 1, y + 1, z + 1], surfaceLevel)) + coord);
 			case 5:
-				return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 1, 0) + coord);
+				return scale * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 1, 0) + coord);
 			case 6:
-				return size * (new Vector3(0, 1, Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x, y + 1, z + 1], surfaceLevel)) + coord);
+				return scale * (new Vector3(0, 1, Mathf.InverseLerp(noiseMap[x, y + 1, z], noiseMap[x, y + 1, z + 1], surfaceLevel)) + coord);
 			case 7:
-				return size * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1, 1) + coord);
+				return scale * (new Vector3(Mathf.InverseLerp(noiseMap[x, y + 1, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1, 1) + coord);
 			case 8:
-				return size * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1) + coord);
+				return scale * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z + 1], noiseMap[x + 1, y + 1, z + 1], surfaceLevel), 1) + coord);
 			case 9:
-				return size * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 0) + coord);
+				return scale * (new Vector3(1, Mathf.InverseLerp(noiseMap[x + 1, y, z], noiseMap[x + 1, y + 1, z], surfaceLevel), 0) + coord);
 			case 10:
-				return size * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y + 1, z], surfaceLevel), 0) + coord);
+				return scale * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z], noiseMap[x, y + 1, z], surfaceLevel), 0) + coord);
 			case 11:
-				return size * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x, y + 1, z + 1], surfaceLevel), 1) + coord);
+				return scale * (new Vector3(0, Mathf.InverseLerp(noiseMap[x, y, z + 1], noiseMap[x, y + 1, z + 1], surfaceLevel), 1) + coord);
 			default:
 				return Vector3.zero;
 		}

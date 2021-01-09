@@ -34,7 +34,7 @@ public class MapPreview : MonoBehaviour
 			mapTexture = TextureGenerator.TextureFromNoiseMap(terrainMap.values, mapLevelZ);
 			mapMaterial.mainTexture = mapTexture;
 		} else if (drawMode == DrawMode.Mesh) {
-			DrawMesh (MeshGenerator.GenerateTerrainMesh(terrainMap, meshScale, sampleCentre));
+			DrawMesh (MeshGenerator.GenerateTerrainMesh(terrainMap, sampleCentre));
 		} 
 	}
 
