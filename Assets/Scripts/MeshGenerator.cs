@@ -281,7 +281,7 @@ public static class MeshGenerator
                 for (int z = 0; z < noiseMap.GetLength(2)-1; z++)
                 {
 
-                    int iteration = getIteration(noiseMap, x, y, z, surfaceLevel);
+                    int iteration = GetIteration(noiseMap, x, y, z, surfaceLevel);
 
 					for (int triangleVertexIndex = 0; triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > triTable.GetLength(1); triangleVertexIndex += 3)
 					{
@@ -302,7 +302,7 @@ public static class MeshGenerator
 
 	}
 
-    public static int getIteration(float[,,] noiseMap, int x, int y, int z, double surfaceLevel)
+    public static int GetIteration(float[,,] noiseMap, int x, int y, int z, double surfaceLevel)
     {
         bool[] activeVertices =
         {
