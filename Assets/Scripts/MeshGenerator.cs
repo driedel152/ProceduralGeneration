@@ -286,9 +286,9 @@ public static class MeshGenerator
 
 					for (int triangleVertexIndex = 0; triTable[iteration, triangleVertexIndex] != -1 || triangleVertexIndex > triTable.GetLength(1); triangleVertexIndex += 3)
 					{
-						Vector3 a = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex]) + sampleCentre;
-						Vector3 b = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 1]) + sampleCentre;
-						Vector3 c = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 2]) + sampleCentre;
+						Vector3 a = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex]) + sampleCentre * scale;
+						Vector3 b = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 1]) + sampleCentre * scale;
+						Vector3 c = GetCubeEdgeAt(x, y, z, scale, noiseMap, surfaceLevel, triTable[iteration, triangleVertexIndex + 2]) + sampleCentre * scale;
 						meshData.AddVertex(a, new Vector2(x, y), vertexIndex);
 						meshData.AddVertex(b, new Vector2(x, y), vertexIndex + 1);
 						meshData.AddVertex(c, new Vector2(x, y), vertexIndex + 2);
