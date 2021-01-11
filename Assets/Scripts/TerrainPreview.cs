@@ -23,12 +23,6 @@ public class TerrainPreview : MonoBehaviour
 	public MeshFilter meshFilter;
 	public MeshRenderer meshRenderer;
 
-    private void Start()
-    {
-		TerrainChunk chunk = new TerrainChunk(terrainSettings, sampleCentre);
-		chunk.DrawMesh(terrainMaterial);
-	}
-
     public void DrawMapInEditor() {
 		TerrainMap terrainMap = TerrainMap.Generate(mapSize, terrainSettings, sampleCentre);
 

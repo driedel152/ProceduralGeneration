@@ -6,7 +6,7 @@ public class TerrainChunk
 {
     public static int chunkSize = 16;
 
-    GameObject meshObject;
+    public GameObject meshObject;
     MeshFilter meshFilter;
     MeshRenderer meshRenderer;
     MeshData meshData;
