@@ -27,4 +27,9 @@ public class TerrainChunk
         meshFilter.sharedMesh = meshData.CreateMesh();
         meshFilter.gameObject.SetActive(true);
     }
+
+    public void SetVisible(bool visible)
+    {
+        meshObject.SetActive(visible);
+    }
 }
