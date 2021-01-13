@@ -7,14 +7,14 @@ public class TerrainChunk
     public static int chunkSize = 16;
 
     public GameObject meshObject;
-    MeshFilter meshFilter;
-    MeshRenderer meshRenderer;
-    MeshData meshData;
+    private MeshFilter meshFilter;
+    private MeshRenderer meshRenderer;
+    private MeshData meshData;
 
-    public TerrainChunk(TerrainMapSettings settings, Vector3 sampleCentre)
+    public TerrainChunk(TerrainMapSettings settings, Vector3 position)
     {
-        TerrainMap chunk = TerrainMap.Generate(chunkSize, settings, sampleCentre);
-        meshData = MeshGenerator.GenerateTerrainMesh(chunk, sampleCentre);
+        TerrainMap chunk = TerrainMap.Generate(chunkSize, settings, position);
+        meshData = MeshGenerator.GenerateTerrainMesh(chunk, position);
     }
 
     public void DrawMesh(Material material)
