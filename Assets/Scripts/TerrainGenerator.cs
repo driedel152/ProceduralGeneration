@@ -52,7 +52,6 @@ public class TerrainGenerator : MonoBehaviour
                         terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
 
                         newChunk.meshObject.transform.parent = this.gameObject.transform;
-                        Debug.Log("Created new chunk at " + viewedChunkCoord);
                     }
                 }
             }
