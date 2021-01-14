@@ -10,7 +10,8 @@ public class TerrainGenerator : MonoBehaviour
     public Vector3 sampleCentre;
     public Material terrainMaterial;
 
-    public int renderDist; // in chunks
+    public int horizontalRenderDist; // in chunks
+    public int verticalRenderDist; // in chunks
 
     public static Dictionary<Vector3, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector3, TerrainChunk>();
     List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
@@ -34,11 +35,11 @@ public class TerrainGenerator : MonoBehaviour
         int currentChunkCoordY = Mathf.FloorToInt(viewerTransform.position.y / chunkSize);
         int currentChunkCoordZ = Mathf.FloorToInt(viewerTransform.position.z / chunkSize);
 
-        for (int yOffset = -renderDist; yOffset <= renderDist; yOffset++)
+        for (int xOffset = -horizontalRenderDist; xOffset <= horizontalRenderDist; xOffset++)
         {
-            for (int xOffset = -renderDist; xOffset <= renderDist; xOffset++)
+            for (int yOffset = -verticalRenderDist; yOffset <= verticalRenderDist; yOffset++)
             {
-                for (int zOffset = -renderDist; zOffset < renderDist; zOffset++)
+                for (int zOffset = -horizontalRenderDist; zOffset < horizontalRenderDist; zOffset++)
                 {
                     Vector3 viewedChunkCoord = new Vector3(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset, currentChunkCoordZ + zOffset);
                     if (terrainChunkDictionary.ContainsKey(viewedChunkCoord))
