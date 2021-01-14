@@ -24,6 +24,10 @@ public class TerrainGenerator : MonoBehaviour
 
     private void UpdateVisibleTerrainChunks()
     {
+        foreach (Vector3 chunkCoord in terrainChunkDictionary.Keys)
+        {
+            terrainChunkDictionary[chunkCoord].SetVisible(false);
+        }
         int chunkSize = TerrainChunk.chunkSize - 1;
 
         int currentChunkCoordX = Mathf.FloorToInt(viewerTransform.position.x / chunkSize);
