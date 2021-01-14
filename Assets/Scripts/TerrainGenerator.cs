@@ -47,10 +47,9 @@ public class TerrainGenerator : MonoBehaviour
                     }
                     else
                     {
-                        TerrainChunk newChunk = new TerrainChunk(terrainSettings, viewedChunkCoord * chunkSize);
+                        TerrainChunk newChunk = new TerrainChunk(terrainSettings, terrainMaterial, viewedChunkCoord * chunkSize);
                         terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
 
-                        newChunk.DrawMesh(terrainMaterial);
                         newChunk.meshObject.transform.parent = this.gameObject.transform;
                         Debug.Log("Created new chunk at " + viewedChunkCoord);
                     }
