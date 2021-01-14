@@ -16,3 +16,6 @@ MonoBehaviour:
   noiseSettings: {fileID: 11400000, guid: e5ff03ed6518fe143a09a6c5ecf94c40, type: 2}
   surfaceLevel: 0.25
   scale: 1.5
+  applySkyFalloff: 1
+  skyFalloffLevel: 0
+  skyFalloffLimit: 38
