@@ -9,6 +9,7 @@ public class TerrainChunk
     public GameObject meshObject;
     private MeshFilter meshFilter;
     private MeshRenderer meshRenderer;
+    private MeshCollider meshCollider;
     private MeshData meshData;
 
     public Vector3 position;
@@ -22,6 +23,8 @@ public class TerrainChunk
         meshObject = new GameObject("TerrainChunk");
         meshFilter = meshObject.AddComponent<MeshFilter>();
         meshRenderer = meshObject.AddComponent<MeshRenderer>();
+        meshCollider = meshObject.AddComponent<MeshCollider>();
+        meshCollider.enabled = false;
         meshRenderer.material = material;
 
         RequestTerrainMap();
@@ -40,12 +43,19 @@ public class TerrainChunk
     private void OnMeshDataReceived(object meshData)
     {
         this.meshData = (MeshData)meshData;
-        meshFilter.sharedMesh = this.meshData.CreateMesh();
+        Mesh mesh = this.meshData.CreateMesh();
+        meshFilter.sharedMesh = mesh;
+        meshCollider.sharedMesh = mesh;
         meshFilter.gameObject.SetActive(true);
     }
 
     public void SetVisible(bool visible)
     {
         meshObject.SetActive(visible);
+    }
+
+    public void SetColliderEnabled(bool enabled)
+    {
+        meshCollider.enabled = enabled;
     }
 }

@@ -56,5 +56,7 @@ public class TerrainGenerator : MonoBehaviour
                 }
             }
         }
+
+        terrainChunkDictionary[new Vector3(currentChunkCoordX, currentChunkCoordY, currentChunkCoordZ)].SetColliderEnabled(true);
     }
 }
