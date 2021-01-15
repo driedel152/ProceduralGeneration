@@ -15,8 +15,12 @@ public class TerrainChunk
     public Vector3 position;
     private TerrainMapSettings terrainMapSettings;
 
+    bool loaded;
+
     public TerrainChunk(TerrainMapSettings terrainMapSettings, Material material, Vector3 position)
     {
+        loaded = false;
+
         this.terrainMapSettings = terrainMapSettings;
         this.position = position;
 
@@ -46,12 +50,15 @@ public class TerrainChunk
         Mesh mesh = this.meshData.CreateMesh();
         meshFilter.sharedMesh = mesh;
         meshCollider.sharedMesh = mesh;
-        meshFilter.gameObject.SetActive(true);
+        loaded = true;
     }
 
     public void SetVisible(bool visible)
     {
-        meshObject.SetActive(visible);
+        if (loaded)
+        {
+            meshObject.SetActive(visible);
+        }
     }
 
     public void SetColliderEnabled(bool enabled)
