@@ -9,7 +9,7 @@ public class TerrainPreview : MonoBehaviour
 
 	public Material terrainMaterial;
 
-	public TerrainMapSettings terrainSettings;
+	public TerrainMapSettings terrainMapSettings;
 
 	public Material mapMaterial;
 
@@ -24,7 +24,7 @@ public class TerrainPreview : MonoBehaviour
 	public MeshRenderer meshRenderer;
 
     public void DrawMapInEditor() {
-		TerrainMap terrainMap = TerrainMap.Generate(mapSize, terrainSettings, sampleCentre);
+		TerrainMap terrainMap = TerrainMap.Generate(mapSize, terrainMapSettings, sampleCentre);
 
 		if (drawMode == DrawMode.NoiseMap) {
 			mapTexture = TextureGenerator.TextureFromNoiseMap(terrainMap.values, mapLevelZ);
@@ -50,9 +50,9 @@ public class TerrainPreview : MonoBehaviour
 
 	void OnValidate() 
 	{
-		if (terrainSettings != null) {
-			terrainSettings.OnValuesUpdated -= OnValuesUpdated;
-			terrainSettings.OnValuesUpdated += OnValuesUpdated;
+		if (terrainMapSettings != null) {
+			terrainMapSettings.OnValuesUpdated -= OnValuesUpdated;
+			terrainMapSettings.OnValuesUpdated += OnValuesUpdated;
 		}
 	}
 
