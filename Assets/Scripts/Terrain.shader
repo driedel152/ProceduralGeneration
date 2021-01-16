@@ -5,7 +5,7 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType" = "Opaque" }
         LOD 200
 
         CGPROGRAM
@@ -15,16 +15,24 @@
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
-        sampler2D _MainTex;
 
         struct Input
         {
             float3 worldPos;
         };
 
+        float inverseLerp(float a, float b, float value) {
+            return saturate((value - a) / (b - a));
+        }
+
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            o.Albedo = float3(1, 0, 0);
+            float maxHeight = 10;
+            float minHeight = -10;
+            float red = inverseLerp(maxHeight, minHeight, IN.worldPos.y);
+            float green = inverseLerp(maxHeight, minHeight, IN.worldPos.x);
+            float blue = inverseLerp(maxHeight, minHeight, IN.worldPos.z);
+            o.Albedo = float3(red, green, blue);
         }
         ENDCG
     }
